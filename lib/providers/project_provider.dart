@@ -7,7 +7,13 @@ import 'package:time_tracker/models/project.dart';
 class ProjectProvider with ChangeNotifier{
   final LocalStorage storage;
 
-  List<Project> _projects = [];
+  List<Project> _projects = [
+    Project(id: '1', name: 'Food'),
+    Project(id: '2', name: 'Transport'),
+    Project(id: '3', name: 'Entertainment'),
+    Project(id: '4', name: 'Office'),
+    Project(id: '5', name: 'Gym'),
+  ];
   List<Project> get projects => _projects;
 
   ProjectProvider(this.storage){
