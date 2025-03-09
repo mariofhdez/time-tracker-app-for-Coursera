@@ -7,6 +7,8 @@ import 'package:time_tracker/providers/time_entry_provider.dart';
 import 'package:time_tracker/screens/home_screen.dart';
 import 'package:time_tracker/screens/project_management_screen.dart';
 import 'package:time_tracker/screens/task_management_screen.dart';
+import 'package:time_tracker/screens/time_entry_screen.dart';
+// import 'package:time_tracker/screens/time_entry_screen.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +38,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => HomeScreen(),
           '/manage_tasks': (context) => TaskManagementScreen(),
           '/manage_projects': (context) => ProjectManagementScreen(),
+          '/time_entry': (context) => TimeEntryScreen(),
         }
       )
     );

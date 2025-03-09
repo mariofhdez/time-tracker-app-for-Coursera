@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/models/time_entry.dart';
 import 'package:time_tracker/providers/project_provider.dart';
+import 'package:time_tracker/providers/task_provider.dart';
 import 'package:time_tracker/providers/time_entry_provider.dart';
 import 'package:time_tracker/screens/add_time_entry_screen.dart';
 
@@ -140,7 +141,19 @@ class _HomeScreenState extends State<HomeScreen>
               subtitle: Text(
                 '${DateFormat('MMM dd, yyyy').format(timeEntry.date)} - Notes: ${timeEntry.notes}',
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context,
+                '/time_entry',
+                arguments: {
+                  'entryId': timeEntry.id,
+                  'projectName': '${getProjectById(context, timeEntry.projectId)}',
+                  'taskName': '${getTaskById(context, timeEntry.taskId)}',
+                  'totalTime': timeEntry.totalTime,
+                  'date': '${DateFormat('MMM dd, yyyy').format(timeEntry.date)}',
+                  'notes': timeEntry.notes,
+                }
+              );
+              },
             );
           },
         );
@@ -237,5 +250,13 @@ class _HomeScreenState extends State<HomeScreen>
       listen: false,
     ).projects.firstWhere((pro) => pro.id == projectId);
     return project.name;
+  }
+
+  String getTaskById(BuildContext context, String taskId){
+    var task = Provider.of<TaskProvider>(
+      context,
+      listen: false
+    ).tasks.firstWhere((t) => t.id == taskId);
+    return task.name;
   }
 }
