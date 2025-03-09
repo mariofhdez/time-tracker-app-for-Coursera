@@ -1,16 +1,7 @@
-# time_tracker
+# time tracker app
 
-A new Flutter project.
+Final project of the learning path Flutter y Dart: Developing iOS, Android and Mobile Apps from IBM and Coursera.
 
-## Getting Started
+## Some Features
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Home Page: Principal frame of the app, it shows when the app is started for the firsts time. If there is no Time Entries a message will be show with a empty state. When there is Time Entries all the records will be showed.
