@@ -27,7 +27,11 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Add Time Entry')),
+      appBar: AppBar(
+        title: Text('Add Time Entry'),
+        backgroundColor: Colors.teal[800],
+        foregroundColor: Colors.white,
+      ),
       body: Form(
         key: _formKey,
         child: Column(
@@ -109,46 +113,6 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
                 );
               },
             ),
-
-            // DropdownButtonFormField<String>(
-            //   value: projectId,
-            //   onChanged: (String? newValue) {
-            //     setState(() {
-            //       projectId = newValue!;
-            //     });
-            //   },
-            //   decoration: InputDecoration(labelText: 'Project'),
-            //   // items: <Project>[],
-            //   items:
-            //       <String>[
-            //         'Project 1',
-            //         'Project 2',
-            //         'Project 3',
-            //       ].map<DropdownMenuItem<String>>((String value) {
-            //         return DropdownMenuItem<String>(
-            //           value: value,
-            //           child: Text(value),
-            //         );
-            //       }).toList(),
-            // ),
-
-            // DropdownButtonFormField<String>(
-            //   value: taskId,
-            //   onChanged: (String? newValue) {
-            //     setState(() {
-            //       taskId = newValue!;
-            //     });
-            //   },
-            //   decoration: InputDecoration(labelText: 'Task'),
-            //   items:
-            //       <String>[
-            //         'Task 1',
-            //         'Task 2',
-            //         'Task 3',
-            //       ].map<DropdownMenuItem<String>>((String value) {
-            //         return DropdownMenuItem(value: value, child: Text(value));
-            //       }).toList(),
-            // ),
             TextFormField(
               decoration: InputDecoration(label: Text('Total time (hours)')),
               keyboardType: TextInputType.numberWithOptions(decimal: true),
