@@ -8,11 +8,9 @@ class ProjectProvider with ChangeNotifier{
   final LocalStorage storage;
 
   List<Project> _projects = [
-    Project(id: '1', name: 'Food'),
-    Project(id: '2', name: 'Transport'),
-    Project(id: '3', name: 'Entertainment'),
-    Project(id: '4', name: 'Office'),
-    Project(id: '5', name: 'Gym'),
+    Project(id: '1', name: 'Project Alpha'),
+    Project(id: '2', name: 'Project Beta'),
+    Project(id: '3', name: 'Project Gamma'),
   ];
   List<Project> get projects => _projects;
 

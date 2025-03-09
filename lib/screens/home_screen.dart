@@ -49,11 +49,11 @@ class _HomeScreenState extends State<HomeScreen>
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(color: Colors.teal[800]),
-              child: Text(
+              child: Center(child: Text(
                 'Menu',
                 style: TextStyle(color: Colors.white, fontSize: 24),
               ),
-            ),
+            )),
             ListTile(
               leading: Icon(Icons.folder),
               title: Text('Projects'),
@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen>
 
       body: TabBarView(
         controller: _tabController,
-        children: [buildAllEntries(context),buildEntriesByProject(context)],
+        children: [buildAllEntries(context), buildEntriesByProject(context)],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -97,20 +97,48 @@ class _HomeScreenState extends State<HomeScreen>
       builder: (context, provider, child) {
         if (provider.entries.isEmpty) {
           return Center(
-            child: Text(
-              "Click the + button to record a new entry.",
-              style: TextStyle(color: Colors.grey[600], fontSize: 18),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.hourglass_empty,
+                  color: Colors.grey[400],
+                  size: 120,
+                  opticalSize: 72,
+                ),
+                SizedBox(height: 20),
+                Text(
+                  "No time entries yet!",
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  "Tap the + button to add your first entry.",
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: 18,
+                    // fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
           );
         }
         return ListView.builder(
           itemCount: provider.entries.length,
           itemBuilder: (context, index) {
-            final entry = provider.entries[index];
+            final timeEntry = provider.entries[index];
             return ListTile(
-              title: Text('${getProjectById(context, entry.projectId)} - ${entry.totalTime} hours', style: TextStyle(fontWeight: FontWeight.bold),),
+              title: Text(
+                '${getProjectById(context, timeEntry.projectId)} - ${timeEntry.totalTime} hours',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               subtitle: Text(
-                '${entry.date.toString()} - Notes: ${entry.notes}',
+                '${DateFormat('MMM dd, yyyy').format(timeEntry.date)} - Notes: ${timeEntry.notes}',
               ),
               onTap: () {},
             );
@@ -125,9 +153,34 @@ class _HomeScreenState extends State<HomeScreen>
       builder: (context, provider, child) {
         if (provider.entries.isEmpty) {
           return Center(
-            child: Text(
-              "Click the + button to record a new entry.",
-              style: TextStyle(color: Colors.grey[600], fontSize: 18),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.hourglass_empty,
+                  color: Colors.grey[400],
+                  size: 120,
+                  opticalSize: 72,
+                ),
+                SizedBox(height: 20),
+                Text(
+                  "No time entries yet!",
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  "Tap the + button to add your first entry.",
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: 18,
+                    // fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
           );
         }

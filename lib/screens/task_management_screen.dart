@@ -8,7 +8,7 @@ class TaskManagementScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Manage Prjects'),
+        title: Text('Manage Tasks'),
         backgroundColor: Colors.teal[800],
         foregroundColor: Colors.white,
       ),
@@ -48,7 +48,8 @@ class TaskManagementScreen extends StatelessWidget {
           );
         },
         tooltip: 'Add new task',
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, color: Colors.white),
+        backgroundColor: Colors.teal[700],
       ),
     );
   }

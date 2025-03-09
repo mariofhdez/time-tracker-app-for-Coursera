@@ -8,21 +8,9 @@ class TaskProvider with ChangeNotifier{
   final LocalStorage storage;
 
   List<Task> _tasks = [
-    Task(id: '1', name: 'Breakfast'),
-    Task(id: '2', name: 'Lunch'),
-    Task(id: '3', name: 'Dinner'),
-    Task(id: '4', name: 'Treat'),
-    Task(id: '5', name: 'Cafe'),
-    Task(id: '6', name: 'Restaurant'),
-    Task(id: '7', name: 'Train'),
-    Task(id: '8', name: 'Vacation'),
-    Task(id: '9', name: 'Birthday'),
-    Task(id: '10', name: 'Diet'),
-    Task(id: '11', name: 'MovieNight'),
-    Task(id: '12', name: 'Tech'),
-    Task(id: '13', name: 'CarStuff'),
-    Task(id: '14', name: 'SelfCare'),
-    Task(id: '15', name: 'Streaming'),
+    Task(id: '1', name: 'Task 1'),
+    Task(id: '2', name: 'Task 2'),
+    Task(id: '3', name: 'Task 3'),
   ];
   List<Task> get tasks => _tasks;
 
