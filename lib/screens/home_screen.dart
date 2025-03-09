@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/models/time_entry.dart';
@@ -50,11 +51,13 @@ class _HomeScreenState extends State<HomeScreen>
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(color: Colors.teal[800]),
-              child: Center(child: Text(
-                'Menu',
-                style: TextStyle(color: Colors.white, fontSize: 24),
+              child: Center(
+                child: Text(
+                  'Menu',
+                  style: TextStyle(color: Colors.white, fontSize: 24),
+                ),
               ),
-            )),
+            ),
             ListTile(
               leading: Icon(Icons.folder),
               title: Text('Projects'),
@@ -133,27 +136,75 @@ class _HomeScreenState extends State<HomeScreen>
           itemCount: provider.entries.length,
           itemBuilder: (context, index) {
             final timeEntry = provider.entries[index];
-            return ListTile(
-              title: Text(
-                '${getProjectById(context, timeEntry.projectId)} - ${timeEntry.totalTime} hours',
-                style: TextStyle(fontWeight: FontWeight.bold),
+            return Slidable(
+              key: Key(timeEntry.id),
+              endActionPane: ActionPane(
+                motion: ScrollMotion(),
+                children: [
+                  CustomSlidableAction(
+                    onPressed: (context) {
+                      showDialog(
+                        context: context,
+                        builder:
+                            (context) => AlertDialog(
+                              title: Text('Are you sure?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop,
+                                  child: Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    String id = timeEntry.id;
+                                    print(timeEntry.id);
+                                    Provider.of<TimeEntryProvider>(
+                                      context,
+                                      listen: false,
+                                    ).deleteTimeEntry(id);
+                                    // Navigator.pop(context);
+                                    Navigator.popAndPushNamed(context, '/');
+                                  },
+                                  child: Text('Delete'),
+                                ),
+                              ],
+                            ),
+                      );
+                    },
+                    backgroundColor: Color(0x99FEF7FF),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.delete, color: Colors.red, size: 28,)
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              subtitle: Text(
-                '${DateFormat('MMM dd, yyyy').format(timeEntry.date)} - Notes: ${timeEntry.notes}',
+              child: ListTile(
+                title: Text(
+                  '${getProjectById(context, timeEntry.projectId)} - ${timeEntry.totalTime} hours',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                  '${DateFormat('MMM dd, yyyy').format(timeEntry.date)} - Notes: ${timeEntry.notes}',
+                ),
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    '/time_entry',
+                    arguments: {
+                      'entryId': timeEntry.id,
+                      'projectName':
+                          '${getProjectById(context, timeEntry.projectId)}',
+                      'taskName': '${getTaskById(context, timeEntry.taskId)}',
+                      'totalTime': timeEntry.totalTime,
+                      'date':
+                          '${DateFormat('MMM dd, yyyy').format(timeEntry.date)}',
+                      'notes': timeEntry.notes,
+                    },
+                  );
+                },
               ),
-              onTap: () {
-                Navigator.pushNamed(context,
-                '/time_entry',
-                arguments: {
-                  'entryId': timeEntry.id,
-                  'projectName': '${getProjectById(context, timeEntry.projectId)}',
-                  'taskName': '${getTaskById(context, timeEntry.taskId)}',
-                  'totalTime': timeEntry.totalTime,
-                  'date': '${DateFormat('MMM dd, yyyy').format(timeEntry.date)}',
-                  'notes': timeEntry.notes,
-                }
-              );
-              },
             );
           },
         );
@@ -252,10 +303,10 @@ class _HomeScreenState extends State<HomeScreen>
     return project.name;
   }
 
-  String getTaskById(BuildContext context, String taskId){
+  String getTaskById(BuildContext context, String taskId) {
     var task = Provider.of<TaskProvider>(
       context,
-      listen: false
+      listen: false,
     ).tasks.firstWhere((t) => t.id == taskId);
     return task.name;
   }

@@ -5,38 +5,46 @@ import 'package:localstorage/localstorage.dart';
 
 import 'package:time_tracker/models/time_entry.dart';
 
-class TimeEntryProvider with ChangeNotifier{
+class TimeEntryProvider with ChangeNotifier {
   final LocalStorage storage;
 
   List<TimeEntry> _entries = [];
   List<TimeEntry> get entries => _entries;
 
-  TimeEntryProvider(this.storage){
+  TimeEntryProvider(this.storage) {
     _loadEntriesFromStorage();
   }
 
-  void _loadEntriesFromStorage() async{
+  void _loadEntriesFromStorage() async {
     var storedTimeEntries = storage.getItem('entries');
-    if(storedTimeEntries != null){
+    if (storedTimeEntries != null) {
       _entries = List<TimeEntry>.from(
-        (storedTimeEntries as List).map((item)=>TimeEntry.fromJson(item))
+        (storedTimeEntries as List).map((item) => TimeEntry.fromJson(item)),
       );
       notifyListeners();
     }
   }
 
-  void addTimeEntry(TimeEntry entry){
+  void addTimeEntry(TimeEntry entry) {
     _entries.add(entry);
     _saveEntriesToStorage();
     notifyListeners();
   }
 
-  void _saveEntriesToStorage(){
-    storage.setItem('entries', jsonEncode(_entries.map((e) => e.toJson()).toList()));
+  void _saveEntriesToStorage() {
+    storage.setItem(
+      'entries',
+      jsonEncode(_entries.map((e) => e.toJson()).toList()),
+    );
   }
 
-  void deleteTimeEntry(String id){
+  void deleteTimeEntry(String id) {
     _entries.removeWhere((entry) => entry.id == id);
+    storage.setItem(
+      'entries',
+      jsonEncode(_entries.map((e) => e.toJson()).toList()),
+    );
+
     notifyListeners();
   }
 }
