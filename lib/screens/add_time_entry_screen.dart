@@ -40,6 +40,7 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
             Form(
               key: _formKey,
               child: Column(
+                spacing: 20,
                 children: <Widget>[
                   //dropdown project
                   Consumer<ProjectProvider>(
@@ -124,7 +125,7 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
                     title: Text(
                       'Date: ${DateFormat('yyyy-MM-dd').format(_selectedDate)}',
                     ),
-                    trailing: Icon(Icons.calendar_today),
+                    trailing: Icon(Icons.calendar_today, color: Colors.teal[700],),
                     onTap: () async {
                       final DateTime? picked = await showDatePicker(
                         context: context,
@@ -169,8 +170,14 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
                     },
                     onSaved: (value) => notes = value!,
                   ),
+                  SizedBox(height: 20),
                   //button save
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.teal[600],
+                      foregroundColor: Colors.white,
+                      minimumSize: Size(double.infinity,50),
+                    ),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
@@ -190,7 +197,7 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
                         Navigator.pop(context);
                       }
                     },
-                    child: Text('Save'),
+                    child: Text('Save',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                   ),
                 ],
               ),

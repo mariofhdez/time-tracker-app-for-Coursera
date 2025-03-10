@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/models/time_entry.dart';
@@ -39,9 +38,9 @@ class _HomeScreenState extends State<HomeScreen>
         foregroundColor: Colors.white,
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: Colors.white,
+          indicatorColor: Color(0xFFFFC103),
           labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
+          unselectedLabelColor: Colors.white38,
           tabs: [Tab(text: "All entries"), Tab(text: "Grouped by Projects")],
         ),
       ),
@@ -82,6 +81,7 @@ class _HomeScreenState extends State<HomeScreen>
         controller: _tabController,
         children: [buildAllEntries(context), buildEntriesByProject(context)],
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -90,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen>
           );
         },
         child: Icon(Icons.add, color: Colors.white),
-        backgroundColor: Colors.teal[700],
+        backgroundColor: Color(0xFFFFC103),
         tooltip: 'Add Time Entry',
       ),
     );
@@ -136,74 +136,52 @@ class _HomeScreenState extends State<HomeScreen>
           itemCount: provider.entries.length,
           itemBuilder: (context, index) {
             final timeEntry = provider.entries[index];
-            return Slidable(
+            String formattedDate = DateFormat(
+              'MMM dd, yyyy',
+            ).format(timeEntry.date);
+            return Dismissible(
               key: Key(timeEntry.id),
-              endActionPane: ActionPane(
-                motion: ScrollMotion(),
-                children: [
-                  CustomSlidableAction(
-                    onPressed: (context) {
-                      showDialog(
-                        context: context,
-                        builder:
-                            (context) => AlertDialog(
-                              title: Text('Are you sure?'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.of(context).pop,
-                                  child: Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    String id = timeEntry.id;
-                                    print(timeEntry.id);
-                                    Provider.of<TimeEntryProvider>(
-                                      context,
-                                      listen: false,
-                                    ).deleteTimeEntry(id);
-                                    // Navigator.pop(context);
-                                    Navigator.popAndPushNamed(context, '/');
-                                  },
-                                  child: Text('Delete'),
-                                ),
-                              ],
-                            ),
-                      );
-                    },
-                    backgroundColor: Color(0x99FEF7FF),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.delete, color: Colors.red, size: 28,)
-                      ],
+              direction: DismissDirection.endToStart,
+              onDismissed: (direction) {
+                provider.deleteTimeEntry(timeEntry.id);
+              },
+              background: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                alignment: Alignment.centerRight,
+                child: Icon(Icons.delete, color: Colors.red),
+              ),
+              child: Card(
+                color: Colors.white70,
+                margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                child: ListTile(
+                  title: Text(
+                    '${getProjectById(context, timeEntry.projectId)} - ${getTaskById(context, timeEntry.taskId)}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.teal[300],
                     ),
                   ),
-                ],
-              ),
-              child: ListTile(
-                title: Text(
-                  '${getProjectById(context, timeEntry.projectId)} - ${timeEntry.totalTime} hours',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  subtitle: Text(
+                    '\nTotal Time: ${timeEntry.totalTime} hours \nDate: ${formattedDate} \nNote: ${timeEntry.notes}',
+                  ),
+
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/time_entry',
+                      arguments: {
+                        'entryId': timeEntry.id,
+                        'projectName':
+                            '${getProjectById(context, timeEntry.projectId)}',
+                        'taskName': '${getTaskById(context, timeEntry.taskId)}',
+                        'totalTime': timeEntry.totalTime,
+                        'date': formattedDate,
+                        'notes': timeEntry.notes,
+                      },
+                    );
+                  },
+                  isThreeLine: true,
                 ),
-                subtitle: Text(
-                  '${DateFormat('MMM dd, yyyy').format(timeEntry.date)} - Notes: ${timeEntry.notes}',
-                ),
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    '/time_entry',
-                    arguments: {
-                      'entryId': timeEntry.id,
-                      'projectName':
-                          '${getProjectById(context, timeEntry.projectId)}',
-                      'taskName': '${getTaskById(context, timeEntry.taskId)}',
-                      'totalTime': timeEntry.totalTime,
-                      'date':
-                          '${DateFormat('MMM dd, yyyy').format(timeEntry.date)}',
-                      'notes': timeEntry.notes,
-                    },
-                  );
-                },
               ),
             );
           },
@@ -267,7 +245,7 @@ class _HomeScreenState extends State<HomeScreen>
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey[800],
+                          color: Colors.teal[300],
                         ),
                       ),
                     ),
@@ -277,14 +255,19 @@ class _HomeScreenState extends State<HomeScreen>
                       itemCount: entry.value.length,
                       itemBuilder: (context, index) {
                         TimeEntry timeEntry = entry.value[index];
-                        return ListTile(
-                          title: Text(
-                            '${getProjectById(context, timeEntry.projectId)} - ${timeEntry.totalTime} hours',
-                          ),
-                          subtitle: Text(
-                            '${DateFormat('MMM dd, yyyy').format(timeEntry.date)} - Notes: ${timeEntry.notes}',
+                        String formattedDate = DateFormat(
+                          'MMM dd, yyyy',
+                        ).format(timeEntry.date);
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                          child: Text(
+                            '- ${getTaskById(context, timeEntry.taskId)}: ${timeEntry.totalTime} hours (${formattedDate})',
                           ),
                         );
+                        // subtitle: Text(
+                        //   '${DateFormat('MMM dd, yyyy').format(timeEntry.date)} - Notes: ${timeEntry.notes}',
+                        // ),
+                        // );
                       },
                     ),
                   ],
