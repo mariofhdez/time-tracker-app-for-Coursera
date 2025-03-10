@@ -1,16 +1,17 @@
-# time_tracker
+# time tracker app
 
-A new Flutter project.
+Final project of the learning path Flutter y Dart: Developing iOS, Android and Mobile Apps from IBM and Coursera.
 
-## Getting Started
+## Some Features
 
-This project is a starting point for a Flutter application.
+Home Page: Principal frame of the app, it shows when the app is started for the firsts time. If there is no Time Entries a message will be show with a empty state. When there is Time Entries all the records will be showed.
 
-A few resources to get you started if this is your first Flutter project:
+Tab All entries: It Shows all recorded time entries.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Tab Grouped by Project: It will group all time entries by project, showing the total accumulated time in hours.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Add Time Entry screen: On this screen, the user is asked to enter a time entry, selecting the project and the task through a dropdown, also requiring the date to be indicated through a date selector. The user is asked to enter the amount of time in hours and to add a note through an input.
+
+Side Menu: A sidebar menu is implemented using a drawer, listing the options Projects and Tasks. When clicking on each option, the user will be taken to the respective management screen.
+
+Management Tasks and Projects: Through the administrator, you can list the items, delete them, or even create new ones using a floating button.
